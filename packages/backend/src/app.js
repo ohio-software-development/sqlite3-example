@@ -8,7 +8,22 @@ app.use(bodyParser.json({ limit: '10kb' }));
 // If 'database.db' does not exist, it will be created for us
 const db = new sqlite3.Database('database.db');
 
-// Your code here
+// Task table statement
+const createTaskTable = `
+    CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        description TEXT NOT NULL,
+        finished BOOLEAN NOT NULL DEFAULT 0
+    )
+`;
+
+// Create table if it doesn't exist
+db.run(createTaskTable, function (err) {
+    if (err) {
+        return console.error('Error creating table:', err.message);
+    }
+    console.log('Table created successfully');
+});
 
 // Routes
 /**
@@ -16,9 +31,28 @@ const db = new sqlite3.Database('database.db');
  * Returns a list of all tasks
  */
 app.get('/api/tasks', async (req, res) => {
+    const query = `SELECT id, description, finished FROM tasks`;
 
-    // Your code here
-    
+    db.all(query, function (error, tasks) {
+        if (error) {
+            console.error(error);
+            return res.status(500).json({
+                code: 500,
+                status: 'error',
+                data: {
+                    messsage: 'An internal error occurred retrieving tasks',
+                }
+            });
+        }
+        return res.status(200).json({
+            code: 200,
+            status: 'success',
+            data: {
+                messsage: 'Tasks successfully retrieved',
+                tasks
+            }
+        });
+    });
 });
 
 /**
@@ -28,8 +62,27 @@ app.get('/api/tasks', async (req, res) => {
 app.post('/api/tasks', async (req, res) => {
     const { taskDescription } = req.body;
 
-    // Your code here
+    const query = `INSERT INTO tasks (description) VALUES (?)`;
 
+    db.run(query, [taskDescription], function (error) {
+        if (error) {
+            console.error(error);
+            return res.status(500).json({
+                code: 500,
+                status: 'error',
+                data: {
+                    messsage: 'An internal error occurred adding task',
+                }
+            });
+        }
+        return res.status(200).json({
+            code: 200,
+            status: 'success',
+            data: {
+                messsage: 'Task successfully added',
+            }
+        });
+    });
 });
 
 /**
@@ -39,8 +92,27 @@ app.post('/api/tasks', async (req, res) => {
 app.patch('/api/tasks', async (req, res) => {
     const { taskId, finished } = req.body;
 
-    // Your code here
+    const query = `UPDATE tasks SET finished = ? WHERE id = ?`;
 
+    db.run(query, [finished, taskId], function (error) {
+        if (error) {
+            console.error(error);
+            return res.status(500).json({
+                code: 500,
+                status: 'error',
+                data: {
+                    messsage: 'An internal error occurred updating task',
+                }
+            });
+        }
+        return res.status(200).json({
+            code: 200,
+            status: 'success',
+            data: {
+                messsage: 'Tasks successfully updated',
+            }
+        });
+    });
 });
 
 /**
@@ -50,8 +122,27 @@ app.patch('/api/tasks', async (req, res) => {
 app.delete('/api/tasks/:id', async (req, res) => {
     const taskId = req.params.id;
 
-    // Your code here
+    const query = `DELETE FROM tasks WHERE id = ?`;
 
+    db.run(query, [taskId], function (error) {
+        if (error) {
+            console.error(error);
+            return res.status(500).json({
+                code: 500,
+                status: 'error',
+                data: {
+                    messsage: 'An internal error occurred deleting task',
+                }
+            });
+        }
+        return res.status(200).json({
+            code: 200,
+            status: 'success',
+            data: {
+                messsage: 'Task successfully deleted',
+            }
+        });
+    });
 });
 
 /** 

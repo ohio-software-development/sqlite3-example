@@ -26,6 +26,7 @@ The provided instructions are intended for Linux-based operating systems (tested
 ## Implement Example
 You’ve just been hired as the backend developer for a sketchy productivity app startup. Fortunately, the frontend team has already created the interface for the app. But your app needs a database to store all the tasks! Using your newly acquired SQL knowledge you need to implement basic [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) functionality for the apps backend API.
 
+0. Navigate to [/packages/backend/src/app.js](/packages/backend/src/app.js)
 1. Create the database 'tasks' table
 ```js
 // If 'database.db' does not exist, it will be created for us

@@ -1,8 +1,16 @@
 const sqlite3 = require('sqlite3').verbose();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 
+// Allow CORS for localhost:3000 (frontend)
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type'],
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: '10kb' }));
 
 // If 'database.db' does not exist, it will be created for us

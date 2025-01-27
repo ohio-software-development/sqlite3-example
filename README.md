@@ -182,3 +182,31 @@ app.delete('/api/tasks/:id', async (req, res) => {
 ```
 
 Nice job! You've just transformed a sketchy startup's pipe dream into a fully functioning app. Your SQLite3-powered database is now handling task creation, retrieval, updates, and deletions! Unfortunately due to budget cuts the boss had to lay off half the team, including you. But with your new SQL skills you'll land a new startup gig in no time!
+
+## Troubleshooting
+
+1. **I don't have node.js installed**
+
+**Answer:**  
+You can install node.js using the following command:
+```bash
+sudo apt install -y nodejs
+```
+
+2. **I don't have npm installed**
+
+**Answer:**  
+You can install npm using the following command:
+```bash
+sudo apt install -y npm
+```
+
+3. **After running `pnpm dev` I get a `EADDRINUSE: address already in use :::5000` error**
+
+**Answer:**  
+This may happen if `pnpm dev` is running in multiple consoles or if you change VSCode workspaces without closing the active terminal. Try looking for and closing out of all active terminals and try again. If that doesn't work, you can kill the process running on port 5000 using the following commands.
+```bash
+lsof -t tcp:5000
+# Find the PID of the process and replace it below
+kill PID
+```

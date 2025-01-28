@@ -6,15 +6,15 @@ The provided instructions are intended for Linux-based operating systems (tested
 
 ## Prerequisites
 
-- Node.js
-- NPM (comes with Node.js)
+- Node.js >=18.12
+- NPM
 
 ## Setup
 
 0. Clone this repo
 1. Install [pnpm](https://pnpm.io/) + project dependencies
     ```bash
-    npm i -g pnpm # Monorepo package manager
+    sudo npm i -g pnpm # Monorepo package manager
     pnpm install
     ```
 2. Start the frontend + backend
@@ -188,7 +188,7 @@ Nice job! You've just transformed a sketchy startup's pipe dream into a fully fu
 1. **I don't have node.js installed**
 
 **Answer:**  
-You can install node.js using the following command:
+You can install Node.js using the following command:
 ```bash
 sudo apt install -y nodejs
 ```
@@ -206,7 +206,17 @@ sudo apt install -y npm
 **Answer:**  
 This may happen if `pnpm dev` is running in multiple consoles or if you change VSCode workspaces without closing the active terminal. Try looking for and closing out of all active terminals and try again. If that doesn't work, you can kill the process running on port 5000 using the following commands.
 ```bash
-lsof -t tcp:5000
+lsof -i tcp:5000
 # Find the PID of the process and replace it below
 kill PID
+```
+If for any other reason you can't use port 5000, you can change it to any other arbitrary port (preferably greater than 5000) in [/packages/backend/src/server.js](/packages/backend/src/server.js).
+
+4. **My Node.js version is too old to install pnpm**
+
+**Answer:**
+Unfortanetly the Node.js version installed from `sudo apt install nodejs` is really old, you can update it with another npm package.
+```bash
+sudo npm i -g n
+sudo n stable
 ```
